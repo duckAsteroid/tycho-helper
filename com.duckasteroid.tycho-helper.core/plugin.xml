@@ -16,5 +16,17 @@
       	<run class="com.duckasteroid.tycho.utils.core.builder.TychoBuilder"/>
       </builder>
    </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="com.duckasteroid.tycho.utils.core.marker.ResolutionGenerator"
+            markerType="com.duckasteroid.tycho-helper.core.marker">
+      </markerResolutionGenerator>
+   </extension>
+   <extension
+         id="marker"
+         name="Maven Tycho Marker"
+         point="org.eclipse.core.resources.markers">
+   </extension>
 
 </plugin>

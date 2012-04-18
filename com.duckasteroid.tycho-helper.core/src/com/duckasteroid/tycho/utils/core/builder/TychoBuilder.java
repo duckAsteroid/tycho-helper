@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * <li>(optional) POM `name` = Manifest `Bundle-Name`</li>
  * </ul> 
  * @author chris
+ * @see http://my.safaribooksonline.com/book/software-engineering-and-development/ide/9780321574435/builders-markers-and-natures/ch14
  */
 public class TychoBuilder extends IncrementalProjectBuilder {
 
