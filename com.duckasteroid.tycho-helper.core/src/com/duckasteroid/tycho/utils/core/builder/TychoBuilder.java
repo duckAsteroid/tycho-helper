@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -19,6 +20,7 @@ import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.PluginModelManager;
 
 import com.duckasteroid.tycho.utils.core.IConstants;
+import com.duckasteroid.tycho.utils.core.builder.Problem.Location;
 
 /**
  * This builder loads PDE and maven models and checks they are in sync: 
@@ -33,7 +35,7 @@ import com.duckasteroid.tycho.utils.core.IConstants;
  */
 public class TychoBuilder extends IncrementalProjectBuilder {
 
-	private List<Check> checks = new ArrayList<Check>();
+	private List<ICheck> checks = new ArrayList<ICheck>();
 	
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
@@ -88,10 +90,55 @@ public class TychoBuilder extends IncrementalProjectBuilder {
 		
 		SubMonitor checkMonitor = subMonitor.newChild(1);
 		checkMonitor.beginTask("Perform consistency checks", checks.size());
-		for(Check check : checks) {
+		for(ICheck check : checks) {
+			ArrayList<Problem> problems = new ArrayList<Problem>();
 			checkMonitor.subTask(check.getDisplayName());
-			check.doCheck(pdeModel, mavenModel, checkMonitor.newChild(1));
+			check.doCheck(pdeModel, mavenModel, problems, checkMonitor.newChild(1));
+			if (!problems.isEmpty()) {
+				reportProblems(problems);
+			}
 		}
+	}
+	
+	protected void reportProblems(List<Problem> problems) {
+		for(Problem p : problems) {
+			
+		}
+	}
+
+	/**
+	 * Utility method to report a problem in a file as a marker
+	 * @param msg The message to include in the marker
+	 * @param file The file that has the problem
+	 * @param charStart The first char of the problem text
+	 * @param charEnd The last char of the problem text
+	 * @param isError 
+	 */
+	protected void reportProblem(Location l) {
+		try {
+			IMarker marker = l.getResource().createMarker(IConstants.MARKER_ID);
+			marker.setAttribute(IMarker.MESSAGE, l.getProblem().getDescription());
+			marker.setAttribute(IMarker.CHAR_START, l.getStartChar());
+			marker.setAttribute(IMarker.CHAR_END, l.getEndChar());
+			switch (l.getProblem().getLevel()) {
+			case ERROR:
+				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);	
+				break;
+			default:
+				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+				break;
+			}
+			marker.setAttribute(IConstants.MARKER_CHECK_TYPE, l.getProblem().getCheckType().getName());
+			
+		} catch (CoreException e) {
+			logError(e);
+			return;
+		}
+	}
+
+	private void logError(Throwable t) {
+		// FIXME Use proper plugin logs!
+		t.printStackTrace();
 	}
 
 }
