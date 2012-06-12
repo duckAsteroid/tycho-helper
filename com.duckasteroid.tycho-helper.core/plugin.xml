@@ -5,14 +5,18 @@
          id="nature"
          name="Tycho Project Nature"
          point="org.eclipse.core.resources.natures">
+         <builder
+               id="com.duckasteroid.tycho-helper.core.builder">
+         </builder>
       <runtime>
          <run class="com.duckasteroid.tycho.utils.core.nature.TychoNature"/>
       </runtime>
    </extension>
    <extension
          id="builder"
-         point="org.eclipse.core.resources.builders">
-      <builder hasNature="true">
+         point="org.eclipse.core.resources.builders"
+         name="Tycho Helper Builder">
+      <builder>
       	<run class="com.duckasteroid.tycho.utils.core.builder.TychoBuilder"/>
       </builder>
    </extension>

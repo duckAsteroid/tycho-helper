@@ -11,3 +11,5 @@ Require-Bundle: org.eclipse.platform;bundle-version="3.7.2",
  org.eclipse.pde.core;bundle-version="3.7.1",
  org.eclipse.m2e.core;bundle-version="1.0.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: com.duckasteroid.tycho.utils.core.TychoHelperPlugin

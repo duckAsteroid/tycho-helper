@@ -102,7 +102,9 @@ public class TychoBuilder extends IncrementalProjectBuilder {
 	
 	protected void reportProblems(List<Problem> problems) {
 		for(Problem p : problems) {
-			
+			for(Location l : p.getLocations()) {
+				reportProblem(l);
+			}
 		}
 	}
 

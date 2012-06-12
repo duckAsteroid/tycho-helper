@@ -2,6 +2,7 @@ package com.duckasteroid.tycho.utils.core.builder.checks;
 
 import java.util.Collection;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
@@ -31,6 +32,8 @@ public class ArtifactSymbolicNameCheck implements ICheck {
 
 	private Location getPdeSymbolicNameLocation(IPluginModelBase pdeModel, String pdeName) {
 		//TODO return the location of the symbolic name in the PDE manifest
+		IResource resource = pdeModel.getUnderlyingResource();
+		
 		return null;
 	}
 
