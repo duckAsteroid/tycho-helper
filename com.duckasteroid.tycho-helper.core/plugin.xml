@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="checks" name="Tycho Helper Checks" schema="schema/checks.exsd"/>
    <extension
          id="nature"
          name="Tycho Project Nature"
@@ -36,6 +37,13 @@
    		 <!--<attribute name="key"/>
    		 <attribute name="violation"/> -->
    		 <persistent value="true"/>
+   </extension>
+   <extension
+         point="com.duckasteroid.tycho-helper.core.checks">
+      <check
+            class="com.duckasteroid.tycho.utils.core.builder.checks.ArtifactSymbolicNameCheck"
+            name="Check that POM artifact ID matches bundle symbolic name">
+      </check>
    </extension>
 
 </plugin>

@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
@@ -20,6 +21,7 @@ import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.PluginModelManager;
 
 import com.duckasteroid.tycho.utils.core.IConstants;
+import com.duckasteroid.tycho.utils.core.TychoHelperPlugin;
 import com.duckasteroid.tycho.utils.core.builder.Problem.Location;
 
 /**
@@ -34,8 +36,6 @@ import com.duckasteroid.tycho.utils.core.builder.Problem.Location;
  * @see http://my.safaribooksonline.com/book/software-engineering-and-development/ide/9780321574435/builders-markers-and-natures/ch14
  */
 public class TychoBuilder extends IncrementalProjectBuilder {
-
-	private List<ICheck> checks = new ArrayList<ICheck>();
 	
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
@@ -56,14 +56,9 @@ public class TychoBuilder extends IncrementalProjectBuilder {
 		IResourceDelta delta = getDelta(getProject());
 		if (delta == null)
 			return false;
-		IResourceDelta[] children = delta.getAffectedChildren();
-		for (int i = 0; i < children.length; i++) {
-			IResourceDelta child = children[i];
-			String fileName = child.getProjectRelativePath().lastSegment();
-			if (fileName.equalsIgnoreCase("pom.xml") || fileName.equalsIgnoreCase("MANIFEST.MF"))
-				return true;
-		}
-		return false;
+		IResourceDelta pomDelta = delta.findMember(new Path("pom.xml"));
+		IResourceDelta manifestDelta = delta.findMember(new Path("META-INF/MANIFEST.MF"));
+		return pomDelta != null || manifestDelta != null;
 	}
 	
 	/**
@@ -89,14 +84,15 @@ public class TychoBuilder extends IncrementalProjectBuilder {
 		subMonitor.worked(1);
 		
 		SubMonitor checkMonitor = subMonitor.newChild(1);
-		checkMonitor.beginTask("Perform consistency checks", checks.size());
+		List<ICheck> checks = TychoHelperPlugin.getChecks();
+		checkMonitor.beginTask("Perform consistency checks", checks.size());		
+		CheckContext ctx = new CheckContext(pdeModel, mavenModel, new ArrayList<Problem>());
 		for(ICheck check : checks) {
-			ArrayList<Problem> problems = new ArrayList<Problem>();
 			checkMonitor.subTask(check.getDisplayName());
-			check.doCheck(pdeModel, mavenModel, problems, checkMonitor.newChild(1));
-			if (!problems.isEmpty()) {
-				reportProblems(problems);
-			}
+			check.doCheck(ctx, checkMonitor.newChild(1));
+		}
+		if (!ctx.getResults().isEmpty()) {
+			reportProblems(ctx.getResults());
 		}
 	}
 	

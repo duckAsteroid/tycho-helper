@@ -50,8 +50,8 @@ public class Problem {
 		return locations;
 	}
 	
-	public void addLocation(Location l) {
-		locations.add(l);
+	public void addLocation(IResource resource, int start, int end) {
+		locations.add(new Location(resource, start, end));
 	}
 	
 	public void removeLocation(Location l) {

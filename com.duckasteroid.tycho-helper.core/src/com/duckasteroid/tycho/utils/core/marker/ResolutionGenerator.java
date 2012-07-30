@@ -8,8 +8,11 @@ public class ResolutionGenerator implements IMarkerResolutionGenerator {
 
 	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
-		// TODO @See http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F
-		return null;
+		// @See http://wiki.eclipse.org/FAQ_How_do_I_implement_Quick_Fixes_for_my_own_language%3F
+		return new IMarkerResolution[]{
+				new Fix("Fix the manifest"),
+				new Fix("Fix the pom"),
+		};
 	}
 
 }
