@@ -21,8 +21,6 @@ Installation
 
 Coming soon.
 
-Create a build @ CloudBees
-
 License
 -------
 
