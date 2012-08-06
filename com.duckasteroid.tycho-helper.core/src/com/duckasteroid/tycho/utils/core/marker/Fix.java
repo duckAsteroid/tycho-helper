@@ -20,7 +20,7 @@ public class Fix implements IMarkerResolution {
 	@Override
 	public void run(IMarker marker) {
 		try {
-			// FIXME Actually fix the problem
+			// TODO Actually fix the problem
 			marker.delete();
 		} catch (CoreException e) {
 			e.printStackTrace();

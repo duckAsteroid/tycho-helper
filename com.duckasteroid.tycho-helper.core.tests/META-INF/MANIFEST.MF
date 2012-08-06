@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tycho Helper Core
+Bundle-SymbolicName: com.duckasteroid.tycho-helper.core.tests;singleton:=true
+Fragment-Host: com.duckasteroid.tycho-helper.core;bundle-version="1.0.0.qualifier" 
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Chris Senior
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit

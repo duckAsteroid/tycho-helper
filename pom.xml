@@ -26,6 +26,7 @@
 
   <modules>
   	<module>com.duckasteroid.tycho-helper.core</module>
+  	<module>com.duckasteroid.tycho-helper.core.tests</module>
   </modules>
   
   <build>

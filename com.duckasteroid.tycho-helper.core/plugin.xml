@@ -44,6 +44,10 @@
             class="com.duckasteroid.tycho.utils.core.builder.checks.ArtifactSymbolicNameCheck"
             name="Check that POM artifact ID matches bundle symbolic name">
       </check>
+      <check
+            class="com.duckasteroid.tycho.utils.core.builder.checks.VersionCheck"
+            name="Check that the POM version matches the manifest version ">
+      </check>
    </extension>
 
 </plugin>
