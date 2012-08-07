@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleActivator;
 
 import com.duckasteroid.tycho.utils.core.builder.ICheck;
-import com.duckasteroid.tycho.utils.core.IConstants;
 
 public class TychoHelperPlugin extends Plugin implements BundleActivator {
+	
+	public TychoHelperPlugin() {}
 	
 	private static final String CHECKS = "checks";
 	private static ArrayList<ICheck> checks = null;
